@@ -1,0 +1,22 @@
+version: '2'
+services:
+  quiz_api:
+    environment:
+      - "BUNDLE_PATH=/quiz_api/.gems"
+    working_dir: /quiz_api
+    image: rails
+    volumes:
+      - "./:/quiz_api"
+    command: "bin/rails s --bind '0.0.0.0' --port 3000"
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - database_quiz
+    links:
+      - database_quiz:database_quiz
+
+  database_quiz:
+    image: postgres
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+
