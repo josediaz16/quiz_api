@@ -13,14 +13,40 @@ RSpec.describe QuizzesController, type: :request do
     header "Accept", "application/json"
     get "/quizzes" do
       example "Listing quizzes" do
-        expected_response = [
-          { "id" => quiz_1.id, "name" => "My sports quiz", "category" => "sports", "created_at" => "2018-01-27T12:00:00.000Z", "updated_at" => "2018-01-27T12:00:00.000Z" },
-          { "id" => quiz_2.id, "name" => "My cooking quiz", "category" => "cook", "created_at" => "2018-01-27T12:00:00.000Z", "updated_at" => "2018-01-27T12:00:00.000Z" }
-        ]
+        expected_response = {
+          "data" => [
+            {
+              "id" => quiz_1.id.to_s,
+              "type" => "quiz",
+              "attributes" => {
+                "name" => "My sports quiz",
+                "category" => "sports",
+                "created-at" => "2018-01-27T12:00:00.000Z",
+                "updated-at" => "2018-01-27T12:00:00.000Z"
+              },
+              "links" => {
+                "self" => {"href" => "/quizzes/#{quiz_1.id}"}
+              }
+            },
+            {
+              "id" => quiz_2.id.to_s,
+              "type" => "quiz",
+              "attributes" => {
+                "name" => "My cooking quiz",
+                "category" => "cook",
+                "created-at" => "2018-01-27T12:00:00.000Z",
+                "updated-at" => "2018-01-27T12:00:00.000Z"
+              },
+              "links" => {
+                "self" => {"href" => "/quizzes/#{quiz_2.id}"}
+              }
+            }
+          ]
+        }
 
         do_request
         response = JSON.parse(response_body)
-        expect(response).to match_array expected_response
+        expect(response).to eq expected_response
       end
     end
   end
@@ -29,6 +55,7 @@ RSpec.describe QuizzesController, type: :request do
     example "Should return ok" do
       get '/quizzes'
       expect(response.status).to eq(200)
+      expect(JSON.parse(response.body)).to eq({"data" => []})
     end
   end
 end
