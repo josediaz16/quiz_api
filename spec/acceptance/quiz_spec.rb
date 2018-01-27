@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 RSpec.describe QuizzesController, type: :request do
+  before { Timecop.freeze(2018, 1, 27, 12) }
+  after { Timecop.return }
+
   resource "Quizzes" do
 
     let(:quiz_1) { Quiz.create(name: "My sports quiz", category: "sports") }
@@ -11,8 +14,8 @@ RSpec.describe QuizzesController, type: :request do
     get "/quizzes" do
       example "Listing quizzes" do
         expected_response = [
-          { "id" => quiz_1.id, "name" => "My sports quiz", "category" => "sports" },
-          { "id" => quiz_2.id, "name" => "My cooking quiz", "category" => "cook" }
+          { "id" => quiz_1.id, "name" => "My sports quiz", "category" => "sports", "created_at" => "2018-01-27T12:00:00.000Z", "updated_at" => "2018-01-27T12:00:00.000Z" },
+          { "id" => quiz_2.id, "name" => "My cooking quiz", "category" => "cook", "created_at" => "2018-01-27T12:00:00.000Z", "updated_at" => "2018-01-27T12:00:00.000Z" }
         ]
 
         do_request

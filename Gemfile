@@ -23,6 +23,7 @@ group :test do
   gem 'rspec-rails', '~> 3.7'
   gem 'factory_bot'
   gem 'database_cleaner'
+  gem 'timecop'
 end
 
 group :development do
