@@ -17,11 +17,12 @@ gem 'puma', '~> 3.0'
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec_api_documentation'
-  gem 'factory_bot'
 end
 
 group :test do
   gem 'rspec-rails', '~> 3.7'
+  gem 'factory_bot'
+  gem 'database_cleaner'
 end
 
 group :development do
