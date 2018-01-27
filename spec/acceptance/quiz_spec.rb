@@ -1,30 +1,31 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Quizzes" do
-  describe "Listing quizzes" do
+RSpec.describe QuizzesController, type: :request do
+  resource "Quizzes" do
 
     let(:quiz_1) { Quiz.create(name: "My sports quiz", category: "sports") }
-    let(:quiz_1) { Quiz.create(name: "My cooking quiz", category: "cook") }
+    let(:quiz_2) { Quiz.create(name: "My cooking quiz", category: "cook") }
 
+    header "Accept", "application/json"
     get "/quizzes" do
-      context "No quiz exists" do
-        example "Should return ok" do
-          do_request
-          expect(status).to be_ok
-        end
-      end
-      context "Some quizzes exist" do
-        example "Should return a list of quizzes" do
-          do_request
-          response = JSON.parse(last_response.body)
-          expect(reponse).to match_array [
-            { id: quiz_1.id, name: "My sports quiz", category: "sports" },
-            { id: quiz_1.id, name: "My cooking quiz", category: "cooking" }
-          ]
-        end
+      example "Listing quizzes" do
+        expected_response = [
+          { "id" => quiz_1.id, "name" => "My sports quiz", "category" => "sports" },
+          { "id" => quiz_2.id, "name" => "My cooking quiz", "category" => "cook" }
+        ]
+
+        do_request
+        response = JSON.parse(response_body)
+        expect(response).to match_array expected_response
       end
     end
+  end
 
+  context "No quiz exists" do
+    example "Should return ok" do
+      get '/quizzes'
+      expect(response.status).to eq(200)
+    end
   end
 end
