@@ -1,0 +1,2 @@
+class GradedQuiz < ApplicationRecord
+end

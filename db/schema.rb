@@ -10,31 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180127174702) do
+ActiveRecord::Schema.define(version: 20180127175118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "graded_quizzes", force: :cascade do |t|
-    t.string  "author",  default: "anonymous", null: false
-    t.decimal "score",   default: "0.0",       null: false
-    t.integer "quiz_id"
-    t.index ["quiz_id"], name: "index_graded_quizzes_on_quiz_id", using: :btree
+  create_table "answers", id: :serial, force: :cascade do |t|
+    t.string "description", null: false
+    t.boolean "correct"
+    t.integer "question_id"
+    t.integer "graded_quiz_id"
+    t.index ["graded_quiz_id"], name: "index_answers_on_graded_quiz_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
-  create_table "questions", force: :cascade do |t|
-    t.text    "description", null: false
-    t.jsonb   "options",     null: false
-    t.string  "answer",      null: false
+  create_table "graded_quizzes", id: :serial, force: :cascade do |t|
+    t.string "author", default: "anonymous", null: false
+    t.decimal "score", default: "0.0", null: false
     t.integer "quiz_id"
-    t.index ["quiz_id"], name: "index_questions_on_quiz_id", using: :btree
+    t.index ["quiz_id"], name: "index_graded_quizzes_on_quiz_id"
   end
 
-  create_table "quizzes", force: :cascade do |t|
-    t.string "name",                  null: false
+  create_table "questions", id: :serial, force: :cascade do |t|
+    t.text "description", null: false
+    t.jsonb "options", null: false
+    t.string "answer", null: false
+    t.integer "quiz_id"
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quizzes", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
     t.string "category", default: "", null: false
   end
 
+  add_foreign_key "answers", "graded_quizzes"
+  add_foreign_key "answers", "questions"
   add_foreign_key "graded_quizzes", "quizzes"
   add_foreign_key "questions", "quizzes"
 end
