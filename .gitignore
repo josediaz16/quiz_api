@@ -12,6 +12,7 @@
 /tmp/*
 log/
 tmp/
+.gems/
 public/
 *.swp
 *.swo
