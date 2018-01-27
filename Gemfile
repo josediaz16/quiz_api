@@ -16,6 +16,7 @@ gem 'puma', '~> 3.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'rspec_api_documentation'
 end
 
 group :test do
