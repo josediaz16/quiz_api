@@ -13,7 +13,7 @@ class QuizzesController < ApplicationController
     if quiz.save
       render json: {id: quiz.id}
     else
-      render json: {error: quiz.errors.messages}
+      render json: {error: quiz.errors.messages}, status: 400
     end
   end
 

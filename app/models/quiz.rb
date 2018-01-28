@@ -1,6 +1,6 @@
 class Quiz < ApplicationRecord
   has_many :questions
-  validates :name, presence: true
+  validates :name, :questions, presence: true
 
   accepts_nested_attributes_for :questions
 end

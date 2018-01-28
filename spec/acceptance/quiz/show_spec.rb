@@ -6,14 +6,17 @@ RSpec.describe QuizzesController, type: :request do
   after { Timecop.return }
 
   resource "Quizzes" do
-    let(:quiz) { Quiz.create(name: "Friends trivia", category: "TV show") }
-    let(:question_1) { Question.create(quiz: quiz, description: "Name of Monica's brother", options: ['Chandler', 'Ross', 'Joey', 'Mike'], answer: "Ross") }
-    let(:question_2) { Question.create(quiz: quiz, description: "Who says vafanapoli?", options: ['Rachel', 'Monica', 'Joey', 'Mike'], answer: "Joey") }
-    let(:question_3) { Question.create(quiz: quiz, description: "How many sisters does Joey have?", options: ['7', '3', '4', '0'], answer: "7") }
-    let(:question_4) { Question.create(quiz: quiz, description: "Almost beat pacman's record", options: ['Jack', 'Ben', 'Gunther', 'Phoebe'], answer: "Phoebe") }
-    let(:question_5) { Question.create(quiz: quiz, description: "Who says 'I'm not great at the advice. Can I interest you in a sarcastic comment?'", options: ['Chandler', 'Rachel', 'Joey', 'Frankie Jr'], answer: "Chandler") }
+    before do
+      @quiz = Quiz.new(name: "Friends trivia", category: "TV show")
+      @question_1 = @quiz.questions.build(description: "Name of Monica's brother", options: ['Chandler', 'Ross', 'Joey', 'Mike'], answer: "Ross")
+      @question_2 = @quiz.questions.build(description: "Who says vafanapoli?", options: ['Rachel', 'Monica', 'Joey', 'Mike'], answer: "Joey")
+      @question_3 = @quiz.questions.build(description: "How many sisters does Joey have?", options: ['7', '3', '4', '0'], answer: "7")
+      @question_4 = @quiz.questions.build(description: "Almost beat pacman's record", options: ['Jack', 'Ben', 'Gunther', 'Phoebe'], answer: "Phoebe")
+      @question_5 = @quiz.questions.build(description: "Who says 'I'm not great at the advice. Can I interest you in a sarcastic comment?'", options: ['Chandler', 'Rachel', 'Joey', 'Frankie Jr'], answer: "Chandler")
+      @quiz.save
+    end
 
-    let(:id) { quiz.id }
+    let(:id) { @quiz.id }
 
     header "Accept", "application/json"
 
@@ -21,7 +24,7 @@ RSpec.describe QuizzesController, type: :request do
       example "Retrieving a quiz" do
         expected_response = {
           "data" => {
-            "id" => quiz.id.to_s,
+            "id" => @quiz.id.to_s,
             "type" => "quiz",
             "attributes" => {
               "name" => "Friends trivia",
@@ -30,23 +33,23 @@ RSpec.describe QuizzesController, type: :request do
               "updated-at" => "2018-01-27T12:00:00.000Z"
             },
             "links" => {
-              "self" => {"href" => "/quizzes/#{quiz.id}"}
+              "self" => {"href" => "/quizzes/#{@quiz.id}"}
             },
             "relationships" => {
               "questions" => {
                 "data" => [
-                  {"id" => question_1.id.to_s, "type" => "question"},
-                  {"id" => question_2.id.to_s, "type" => "question"},
-                  {"id" => question_3.id.to_s, "type" => "question"},
-                  {"id" => question_4.id.to_s, "type" => "question"},
-                  {"id" => question_5.id.to_s, "type" => "question"}
+                  {"id" => @question_1.id.to_s, "type" => "question"},
+                  {"id" => @question_2.id.to_s, "type" => "question"},
+                  {"id" => @question_3.id.to_s, "type" => "question"},
+                  {"id" => @question_4.id.to_s, "type" => "question"},
+                  {"id" => @question_5.id.to_s, "type" => "question"}
                 ]
               }
             }
           },
           "included" => [
             {
-              "id" => question_1.id.to_s,
+              "id" => @question_1.id.to_s,
               "type" => "question",
               "attributes" => {
                 "description" => "Name of Monica's brother",
@@ -57,17 +60,17 @@ RSpec.describe QuizzesController, type: :request do
               "relationships" => {
                 "quiz" => {
                   "data" => {
-                    "id" => quiz.id.to_s,
+                    "id" => @quiz.id.to_s,
                     "type" => "quiz"
                   }
                 }
               },
               "links" => {
-                "self" => {"href" => "/quizzes/#{quiz.id}/questions/#{question_1.id}"}
+                "self" => {"href" => "/quizzes/#{@quiz.id}/questions/#{@question_1.id}"}
               }
             },
             {
-              "id" => question_2.id.to_s,
+              "id" => @question_2.id.to_s,
               "type" => "question",
               "attributes" => {
                 "description" => "Who says vafanapoli?",
@@ -78,17 +81,17 @@ RSpec.describe QuizzesController, type: :request do
               "relationships" => {
                 "quiz" => {
                   "data" => {
-                    "id" => quiz.id.to_s,
+                    "id" => @quiz.id.to_s,
                     "type" => "quiz"
                   }
                 }
               },
               "links" => {
-                "self" => {"href" => "/quizzes/#{quiz.id}/questions/#{question_2.id}"}
+                "self" => {"href" => "/quizzes/#{@quiz.id}/questions/#{@question_2.id}"}
               }
             },
             {
-              "id" => question_3.id.to_s,
+              "id" => @question_3.id.to_s,
               "type" => "question",
               "attributes" => {
                 "description" => "How many sisters does Joey have?",
@@ -99,17 +102,17 @@ RSpec.describe QuizzesController, type: :request do
               "relationships" => {
                 "quiz" => {
                   "data" => {
-                    "id" => quiz.id.to_s,
+                    "id" => @quiz.id.to_s,
                     "type" => "quiz"
                   }
                 }
               },
               "links" => {
-                "self" => {"href" => "/quizzes/#{quiz.id}/questions/#{question_3.id}"}
+                "self" => {"href" => "/quizzes/#{@quiz.id}/questions/#{@question_3.id}"}
               }
             },
             {
-              "id" => question_4.id.to_s,
+              "id" => @question_4.id.to_s,
               "type" => "question",
               "attributes" => {
                 "description" => "Almost beat pacman's record",
@@ -120,17 +123,17 @@ RSpec.describe QuizzesController, type: :request do
               "relationships" => {
                 "quiz" => {
                   "data" => {
-                    "id" => quiz.id.to_s,
+                    "id" => @quiz.id.to_s,
                     "type" => "quiz"
                   }
                 }
               },
               "links" => {
-                "self" => {"href" => "/quizzes/#{quiz.id}/questions/#{question_4.id}"}
+                "self" => {"href" => "/quizzes/#{@quiz.id}/questions/#{@question_4.id}"}
               }
             },
             {
-              "id" => question_5.id.to_s,
+              "id" => @question_5.id.to_s,
               "type" => "question",
               "attributes" => {
                 "description" => "Who says 'I'm not great at the advice. Can I interest you in a sarcastic comment?'",
@@ -141,13 +144,13 @@ RSpec.describe QuizzesController, type: :request do
               "relationships" => {
                 "quiz" => {
                   "data" => {
-                    "id" => quiz.id.to_s,
+                    "id" => @quiz.id.to_s,
                     "type" => "quiz"
                   }
                 }
               },
               "links" => {
-                "self" => {"href" => "/quizzes/#{quiz.id}/questions/#{question_5.id}"}
+                "self" => {"href" => "/quizzes/#{@quiz.id}/questions/#{@question_5.id}"}
               }
             }
           ]

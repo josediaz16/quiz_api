@@ -7,8 +7,8 @@ RSpec.describe QuizzesController, type: :request do
 
   resource "Quizzes" do
 
-    let(:quiz_1) { Quiz.create(name: "My sports quiz", category: "sports") }
-    let(:quiz_2) { Quiz.create(name: "My cooking quiz", category: "cook") }
+    let(:quiz_1) { create(:quiz, name: "My sports quiz", category: "sports") }
+    let(:quiz_2) { create(:quiz, name: "My cooking quiz", category: "cook") }
 
     header "Accept", "application/json"
     get "/quizzes" do
