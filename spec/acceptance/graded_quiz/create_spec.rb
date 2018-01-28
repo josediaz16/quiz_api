@@ -65,6 +65,42 @@ RSpec.describe QuizzesController, type: :request do
           expect(response). to eq({"id" => graded_quiz.id, "score" => "8.0"})
         end
       end
+      context "Sending an uncomplete quiz" do
+        before { questions_attributes.delete_at(0) }
+        let(:raw_post) { params.to_json }
+
+        example "Should respond 400", document: false do
+          do_request
+
+          graded_quiz = GradedQuiz.last
+
+          expect(status).to eq(400)
+          expect(graded_quiz).to be_nil
+
+          response = JSON.parse(response_body)
+          expect(response).to eq({
+            "error" => "The number of answers does not match the number of questions of the quiz"
+          })
+        end
+      end
+      context "Sending an answer to a question that does not exist" do
+        before { questions_attributes[0]["id"] = "wrong_id" }
+        let(:raw_post) { params.to_json }
+
+        example "Should respond 400", document: false do
+          do_request
+
+          graded_quiz = GradedQuiz.last
+
+          expect(status).to eq(400)
+          expect(graded_quiz).to be_nil
+
+          response = JSON.parse(response_body)
+          expect(response).to eq({
+            "error" => "The question with identifier wrong_id could not be found"
+          })
+        end
+      end
     end
   end
 end
