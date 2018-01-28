@@ -2,9 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 RSpec.describe QuizzesController, type: :request do
-  #before { Timecop.freeze(2018, 1, 27, 12) }
-  #after { Timecop.return }
-
   resource "Quizzes" do
     header 'Content-Type', "application/json"
 
@@ -14,7 +11,7 @@ RSpec.describe QuizzesController, type: :request do
       parameter :questions_attributes, "A set of 20 questions, for detailed documentation of each field of question, see below", required: true
     end
 
-    with_options scope: [:quiz, :questions], required: true do
+    with_options scope: [:quiz, :questions_attributes], required: true do
       parameter :description, "The question itself"
       parameter :options, "An array of possible answers"
       parameter :answer, "The correct answer from the options set"
@@ -96,7 +93,7 @@ RSpec.describe QuizzesController, type: :request do
 
           quiz = Quiz.last
 
-          expect(status).to eq(200)
+          expect(status).to eq(201)
           response = JSON.parse(response_body)
           expect(response). to eq({"id" => quiz.id})
         end
