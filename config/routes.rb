@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   resources :quizzes, only: [:index, :show, :create, :update] do
     post :grade
     resources :questions, only: :show
+    resources :graded_quizzes, only: :show
   end
 end

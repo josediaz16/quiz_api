@@ -39,9 +39,10 @@ RSpec.describe GradedQuizzesController, type: :request do
         expected_response = {
           "data" => {
             "id" => @graded_quiz.id.to_s,
-            "type" => "graded_quiz",
+            "type" => "graded-quiz",
             "attributes" => {
-              "score" => 8.0,
+              "author" => "anonymous",
+              "score" => "8.0",
               "created-at" => "2018-01-27T12:00:00.000Z",
               "updated-at" => "2018-01-27T12:00:00.000Z"
             },
@@ -58,18 +59,18 @@ RSpec.describe GradedQuizzesController, type: :request do
           },
           "included" => [
             {
-              "id" => @question_1.id.to_s,
-              "type" => "question",
+              "id" => @wrong_answer.id.to_s,
+              "type" => "answer",
               "attributes" => {
                 "question" => "Almost beat pacman's record",
                 "description" => "Gunther",
                 "created-at" => "2018-01-27T12:00:00.000Z",
               },
               "relationships" => {
-                "graded_quiz" => {
+                "graded-quiz" => {
                   "data" => {
                     "id" => @graded_quiz.id.to_s,
-                    "type" => "graded_quiz"
+                    "type" => "graded-quiz"
                   }
                 }
               }
