@@ -11,7 +11,7 @@ RSpec.describe QuizzesController, type: :request do
     with_options scope: :quiz do
       parameter :name, "Quiz Name", required: true
       parameter :category, "Quiz Category", required: false
-      parameter :questions, "A set of 20 questions, for detailed documentation of each field of question, see below", required: true
+      parameter :questions_attributes, "A set of 20 questions, for detailed documentation of each field of question, see below", required: true
     end
 
     with_options scope: [:quiz, :questions], required: true do
@@ -22,7 +22,7 @@ RSpec.describe QuizzesController, type: :request do
 
     let(:name) { "Friends Trivia" }
     let(:category) { "TV show" }
-    let(:questions) do
+    let(:questions_attributes) do
       [
         {
           "description" => "Name of Monica's brother",
@@ -60,7 +60,7 @@ RSpec.describe QuizzesController, type: :request do
           "quiz"=> {
             "name"=>"Friends Trivia",
             "category"=>"TV show",
-            "questions"=> [
+            "questions_attributes"=> [
               {
                 "description"=>"Name of Monica's brother",
                 "options"=>["Chandler", "Ross", "Joey", "Mike"],
