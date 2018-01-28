@@ -16,6 +16,8 @@ RSpec.describe QuizzesController, type: :request do
       parameter :answer, "The correct answer from the options set"
     end
 
+    response_field :id, "The unique identifier of the quiz created."
+
     let(:name) { "Friends Trivia" }
     let(:category) { "TV show" }
     let(:questions_attributes) do

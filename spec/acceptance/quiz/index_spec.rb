@@ -9,6 +9,20 @@ RSpec.describe QuizzesController, type: :request do
     let(:quiz_1) { create(:quiz, name: "My sports quiz", category: "sports") }
     let(:quiz_2) { create(:quiz, name: "My cooking quiz", category: "cook") }
 
+    response_field :data, "The list of quizzes available."
+
+    with_options scope: :data do
+      response_field :id, "The unique identifier of the quiz."
+      response_field :type, "The type of object in the API."
+    end
+
+    with_options scope: [:data, :attributes] do
+      response_field :name, "The name of the quiz."
+      response_field :category, "The category of the quiz."
+      response_field "created-at", "The date and time the quiz was created."
+      response_field "updated-at", "The last date and time the quiz was update."
+    end
+
     header "Accept", "application/json"
     get "/quizzes" do
       example "Listing quizzes" do

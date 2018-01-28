@@ -1,6 +1,6 @@
 require 'support/acceptance_helper'
 
-RSpec.describe QuizzesController, type: :request do
+RSpec.describe GradedQuizzesController, type: :request do
   resource "Graded Quizzes" do
     before do
       @quiz = Quiz.new(name: "Friends trivia", category: "TV show")
@@ -25,6 +25,9 @@ RSpec.describe QuizzesController, type: :request do
       parameter :answer, "The answer to submit"
     end
 
+    response_field :id, "The unique identifier of the graded quiz."
+    response_field :score, "The total score of the graded quiz."
+
     let(:quiz_id) { @quiz.id }
     let(:author) { "Janice" }
 
@@ -38,7 +41,7 @@ RSpec.describe QuizzesController, type: :request do
       ]
     end
 
-    post "/quizzes/:quiz_id/grade" do
+    post "/quizzes/:quiz_id/graded_quizzes/" do
       context "A successful request" do
         let(:raw_post) { params.to_json }
 

@@ -34,6 +34,30 @@ RSpec.describe GradedQuizzesController, type: :request do
 
     header "Accept", "application/json"
 
+    with_options scope: :data do
+      response_field :id, "The unique identifier of the graded quiz."
+      response_field :attributes, "Detailed data about the graded quiz."
+    end
+
+    with_options scope: :attributes do
+      response_field :author, "The name of the person who submitted the quiz."
+      response_field :score, "The total score of the graded quiz."
+      response_field "created-at", "The date and time the quiz was submitted."
+      response_field "updated-at", "The last date and time the quiz was updated."
+    end
+
+    response_field :included, "Detailed data about each question that was uncorrectly answered."
+
+    with_options scope: :included do
+      response_field :id, "The unique identifier of the answer."
+    end
+
+    with_options scope: [:included, :attributes] do
+      response_field :description, "The answer itself."
+      response_field :question, "The question related to this answer."
+      response_field "created-at", "The date and time the answer was was submitted."
+    end
+
     get "quizzes/:quiz_id/graded_quizzes/:id" do
       example "Retrieving a graded quiz" do
         expected_response = {

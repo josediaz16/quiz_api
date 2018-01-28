@@ -19,6 +19,35 @@ RSpec.describe QuizzesController, type: :request do
 
     header "Accept", "application/json"
 
+    with_options scope: :data do
+      response_field :id, "The unique identifier of the quiz."
+      response_field :type, "The type of object in the API."
+    end
+
+    with_options scope: [:data, :attributes] do
+      response_field :name, "The name of the quiz."
+      response_field :category, "The category of the quiz."
+      response_field "created-at", "The date and time the quiz was created."
+      response_field "updated-at", "The last date and time the quiz was update."
+    end
+
+    with_options scope: [:data, :relationships, :questions] do
+      response_field :data, "The set of identifiers of questions of the quiz."
+    end
+
+    response_field :included, "Detailed data about each question of the quiz."
+
+    with_options scope: :included do
+      response_field :id, "The unique identifier of the question."
+    end
+
+    with_options scope: [:included, :attributes] do
+      response_field :description, "The question itself."
+      response_field :options, "The set of possible answers to the question."
+      response_field "created-at", "The date and time the answer was created."
+      response_field "updated-at", "The last date and time the answer was updated."
+    end
+
     get "quizzes/:id" do
       example "Retrieving a quiz" do
         expected_response = {
