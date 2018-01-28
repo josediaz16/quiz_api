@@ -7,4 +7,5 @@ RspecApiDocumentation.configure do |config|
   config.curl_host = 'http://localhost:3000/'
   config.api_name = "Quiz API"
   config.api_explanation = "This is a simple API to create custom quizzes and to grade them"
+  config.docs_dir = Rails.root.join("public", "doc", "api")
 end
