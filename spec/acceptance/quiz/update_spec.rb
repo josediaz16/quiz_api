@@ -1,5 +1,4 @@
-require 'rails_helper'
-require 'rspec_api_documentation/dsl'
+require 'support/acceptance_helper'
 
 RSpec.describe QuizzesController, type: :request do
   resource "Quizzes" do
