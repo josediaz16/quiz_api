@@ -26,6 +26,17 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def grade
+    quiz = Quiz.find(params[:quiz_id])
+    response = Quizzes::Grader.new(quiz, quiz_params[:questions_attributes]).perform
+
+    if response.success?
+      render json: response.data, status: 201
+    else
+      render json: {error: response.parsed_errors }, status: 400
+    end
+  end
+
   private
 
   def quiz_params

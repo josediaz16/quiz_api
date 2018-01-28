@@ -13,7 +13,7 @@ RSpec.describe QuizzesController, type: :request do
     end
     header 'Content-Type', "application/json"
 
-    parameter :id, "The identifier of the quiz to grade", required: true
+    parameter :quiz_id, "The identifier of the quiz to grade", required: true
 
     with_options scope: :quiz do
       parameter :author, "The name of who submits the quiz"
@@ -25,7 +25,7 @@ RSpec.describe QuizzesController, type: :request do
       parameter :answer, "The answer to submit"
     end
 
-    let(:id) { @quiz.id }
+    let(:quiz_id) { @quiz.id }
     let(:author) { "Janice" }
 
     let(:questions_attributes) do
@@ -38,7 +38,7 @@ RSpec.describe QuizzesController, type: :request do
       ]
     end
 
-    post "/quizzes/:id/grade" do
+    post "/quizzes/:quiz_id/grade" do
       context "A successful request" do
         let(:raw_post) { params.to_json }
 
@@ -62,7 +62,7 @@ RSpec.describe QuizzesController, type: :request do
           graded_quiz = GradedQuiz.last
 
           response = JSON.parse(response_body)
-          expect(response). to eq({"id" => graded_quiz.id, "score" => "8"})
+          expect(response). to eq({"id" => graded_quiz.id, "score" => "8.0"})
         end
       end
     end
