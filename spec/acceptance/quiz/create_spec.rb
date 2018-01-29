@@ -135,7 +135,7 @@ RSpec.describe QuizzesController, type: :request do
           response = JSON.parse(response_body)
           expect(response).to eq({
             "error" => {
-              "questions" => ["There must be #{Quiz::NUMBER_OF_QUESTIONS[:test]} questions"]
+              "questions" => ["There must be at least #{Quiz::NUMBER_OF_QUESTIONS[:test]} questions"]
             }
           })
         end

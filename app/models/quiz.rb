@@ -13,8 +13,8 @@ class Quiz < ApplicationRecord
   def valid_questions?
     number_of_questions = NUMBER_OF_QUESTIONS[Rails.env.to_sym]
 
-    if not (questions.present? && questions.length.eql?(number_of_questions))
-      errors.add(:questions, :invalid_number_of_questions, message: "There must be #{number_of_questions} questions")
+    if not (questions.present? && (questions.length.to_f >= number_of_questions))
+      errors.add(:questions, :invalid_number_of_questions, message: "There must be at least #{number_of_questions} questions")
     end
   end
 end
